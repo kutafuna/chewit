@@ -80,7 +80,7 @@ module.exports = exports = (siteId) => {
     let source = req.headers["user-agent"] || "";
     if (req.headers["x-ucbrowser-ua"]) source = req.headers["x-ucbrowser-ua"];
 
-    const ua = new agent();
+    const ua = agent();
 
     ua.Agent.source = source.replace(/^\s*/, "").replace(/\s*$/, "");
     ua.Agent.os = ua.getOS(ua.Agent.source);
