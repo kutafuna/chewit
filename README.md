@@ -9,7 +9,7 @@
 ### Installation
 
 ```bash
-$ npm i
+$ npm i chewit -S
 ```
 
 
