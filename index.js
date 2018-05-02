@@ -16,9 +16,9 @@ const log = console.log;
 
 //  P R O G R A M
 
-module.exports = exports = (siteId) => {
+module.exports = exports = siteId => {
   return (req, res, next) => {
-    if (!siteId || !req) return displayError("A parameter is missing!");
+    if (!siteId || !req) return displayError("A parameter is missing!", next);
 
     const logVisit = {};
 
@@ -110,7 +110,7 @@ module.exports = exports = (siteId) => {
         resolve(body);
         next();
       }).catch(welp => {
-        displayError(welp);
+        displayError(welp, next());
         resolve(welp);
       });
     });
@@ -121,7 +121,7 @@ module.exports = exports = (siteId) => {
 
 //  H E L P E R
 
-const displayError = text => {
+const displayError = (text, next) => {
   if (text.toString().includes("40"))
     text = text.toString().split("-")[1].trim().replace(/"/g, "");
 
@@ -134,5 +134,5 @@ const displayError = text => {
     chalk.red(`\n▸▸ Chew Error\n`) +
     chalk.magenta(`▸▸▸ ${text.toString().split(":")}\n\n`) +
     chalk.cyan(`Check ${chalk.underline("https://chew.sh/docs")} for integration tips\n`)
-  );
+  ), next();
 };
