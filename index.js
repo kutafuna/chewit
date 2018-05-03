@@ -26,12 +26,7 @@ module.exports = exports = siteId => {
     logVisit.timestamp = Date.now();
 
     if (req.headers.host) logVisit.host = req.headers.host;
-
-    if (req.hostname) {
-      if (!req.hostname !== "localhost") logVisit.hostname = req.hostname;
-      else return; // ignore local development
-    }
-
+    if (req.hostname) logVisit.hostname = req.hostname;
     if (req.headers["accept-language"]) logVisit.language = req.headers["accept-language"];
     if (req.headers.referer) logVisit.referrer = req.headers.referer;
 
@@ -105,19 +100,23 @@ module.exports = exports = siteId => {
     logVisit.ua = ua.Agent;
 
     return new Promise((resolve, reject) => {
-      request({
-        method: "POST",
-        url: "https://api.chew.sh",
-        body: logVisit,
-        json: true
-      }).then(body => {
-        if (!body) return reject(body);
-        resolve(body);
-        next();
-      }).catch(welp => {
-        displayError(welp, next());
-        resolve(welp);
-      });
+      if (!req.hostname !== "localhost") {
+        request({
+          method: "POST",
+          url: "https://api.chew.sh",
+          body: logVisit,
+          json: true
+        }).then(body => {
+          if (!body) return reject(body);
+          resolve(body);
+          next();
+        }).catch(welp => {
+          displayError(welp, next());
+          resolve(welp);
+        });
+      }
+
+      return false;
     });
   };
 };
