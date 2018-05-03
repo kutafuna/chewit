@@ -26,7 +26,12 @@ module.exports = exports = siteId => {
     logVisit.timestamp = Date.now();
 
     if (req.headers.host) logVisit.host = req.headers.host;
-    if (req.hostname) logVisit.hostname = req.hostname;
+
+    if (req.hostname) {
+      if (!req.hostname !== "localhost") logVisit.hostname = req.hostname;
+      else return; // ignore local development
+    }
+
     if (req.headers["accept-language"]) logVisit.language = req.headers["accept-language"];
     if (req.headers.referer) logVisit.referrer = req.headers.referer;
 
