@@ -100,7 +100,7 @@ module.exports = exports = siteId => {
     logVisit.ua = ua.Agent;
 
     return new Promise((resolve, reject) => {
-      if (!req.hostname !== "localhost") {
+      if (req.hostname !== "localhost") {
         request({
           method: "POST",
           url: "https://api.chew.sh",
@@ -114,9 +114,9 @@ module.exports = exports = siteId => {
           displayError(welp, next());
           resolve(welp);
         });
+      } else {
+        next();
       }
-
-      return false;
     });
   };
 };
