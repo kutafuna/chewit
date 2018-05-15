@@ -31,30 +31,6 @@ module.exports = exports = siteId => {
     if (req.headers.referer) logVisit.referrer = req.headers.referer;
 
     if (
-      req.headers.cookie &&
-      req.headers.cookie.includes("ChewSessionId")
-    ) {
-      const r = /(ChewSessionId).+?([;]|[\s]|[\n]|[\r])/gm;
-
-      if (
-        !req.headers.cookie.match(r) ||
-        !req.headers.cookie.match(r)[0] ||
-        !req.headers.cookie.match(r)[0].split("=") ||
-        !req.headers.cookie.match(r)[0].split("=")[1] ||
-        !req.headers.cookie.match(r)[0].split("=")[1].replace(";", "")
-      ) return;
-
-      // This cookie grabber here will be checked
-      // server-side over on Chew to see if you
-      // are logged in and viewing your own site.
-      //
-      // If so, your site visit will be ignored
-      // and not added to your analytics.
-
-      logVisit.cookie = req.headers.cookie.match(r)[0].split("=")[1].replace(";", "");
-    }
-
-    if (
       req.headers.dnt &&
       parseInt(req.headers.dnt)
     ) logVisit.dnt = parseInt(req.headers.dnt);
