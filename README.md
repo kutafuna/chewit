@@ -19,7 +19,7 @@ $ npm i chewit -S
 Sign up for an account on [Chew](https://chew.sh) and apply your site's code in your Express app like so:
 
 ```javascript
-import chew from "chewit";
+import chew from "chewit"; // or, const chew = require("chewit");
 
 const app = express()
   // ...after setting views, body parsing, &c
