@@ -75,7 +75,7 @@ module.exports = exports = siteId => {
 
     logVisit.ua = ua.Agent;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { // eslint-disable-line
       if (req.hostname !== "localhost") {
         request({
           method: "POST",
@@ -83,7 +83,7 @@ module.exports = exports = siteId => {
           body: logVisit,
           json: true
         }).then(body => {
-          if (!body) return reject(body);
+          if (!body) return resolve(body);
           resolve(body);
           next();
         }).catch(welp => {

@@ -2,19 +2,25 @@
   "name": "chewit",
   "description": "Node module for Chew Analytics",
   "author": "Paul Anthony Webb <paul@inc.sh>",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "license": "UNLICENSED",
   "engines": {
     "node": ">=10.2.0"
   },
   "dependencies": {
     "chalk": "~2.4.1",
+    "request": "~2.87.0",
     "request-promise-native": "~1.0.5"
   },
-  "peerDependencies": {
-    "request": "~2.87.0"
+  "devDependencies": {
+    "npm-run-all": "^4.1.3",
+    "snazzy": "^7.1.1",
+    "standardx": "^2.1.0",
+    "updates": "^4.1.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "run-p test:*",
+    "test:dependencies": "updates -u ./",
+    "test:lint": "standardx --verbose | snazzy"
   }
 }
