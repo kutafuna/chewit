@@ -4,11 +4,11 @@ Thumbs.db
 
 
 
-# Folders
-node_modules
-
-
-
 # Files
 npm-shrinkwrap.json
 package-lock.json
+
+
+
+# Folders
+node_modules
