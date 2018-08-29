@@ -5,12 +5,12 @@
 //  P A C K A G E S
 
 const agent = require("./lib/ua");
-const chalk = require("chalk");
+const color = require("colorette");
 const request = require("request-promise-native");
 
 //  V A R I A B L E
 
-const log = console.log;
+const log = console.log; // eslint-disable-line
 
 
 
@@ -111,8 +111,8 @@ const displayError = (text, next) => {
   if (text.toString().includes("socket hang up")) return;
 
   return log(
-    chalk.red(`\n▸▸ Chew Error\n`) +
-    chalk.magenta(`▸▸▸ ${text.toString().split(":")}\n\n`) +
-    chalk.cyan(`Check ${chalk.underline("https://chew.sh/docs")} for integration tips\n`)
+    color.red("\n▸▸ Chew Error\n") +
+    color.magenta(`▸▸▸ ${text.toString().split(":")}\n\n`) +
+    color.cyan(`Check ${color.underline("https://chew.sh/docs")} for integration tips\n`)
   ), next();
 };

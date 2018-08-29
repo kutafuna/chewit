@@ -25,5 +25,5 @@
     "test:dependencies": "updates -u ./",
     "test:lint": "standardx --verbose | snazzy"
   },
-  "version": "1.0.11"
+  "version": "1.0.12"
 }
