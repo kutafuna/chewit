@@ -1,29 +1,49 @@
 # chewit
 
-[![INC](https://img.shields.io/badge/%F0%9F%92%A1-IdeasNeverCease/chewit-07d0eb.svg?style=flat-square)](https://git.inc.sh/IdeasNeverCease/chewit)
+[![INC](https://img.shields.io/badge/%F0%9F%92%A1-IdeasNeverCease/chewit-07d0eb.svg?style=flat-square)](https://git.inc.sh/IdeasNeverCease/chewit) ![download count](https://img.shields.io/npm/dt/chewit.svg?style=flat-square) ![npm version](https://img.shields.io/npm/v/chewit.svg?style=flat-square)
 
 > Analytics you can count on
 
 
 
-### Installation
+## Installation
 
 ```bash
 $ npm i chewit -S
 ```
 
+Note that this module requires an account with [Chew](https://chew.sh), currently in alpha.
 
 
-### Integration
 
-Sign up for an account on [Chew](https://chew.sh) and apply your site's code in your Express app like so:
+## Features
 
-```javascript
-import chew from "chewit"; // or, const chew = require("chewit");
+- **namespaced modules:** just use what you need!
+- **server-side analytics:** no need to muddy up your beautiful front-end with tracking snippets!
+- **super simple:** less than 3 lines of code on your part, wonderful!
+
+
+
+## Examples
+
+### Express
+
+```js
+const chew = require("chewit/express");
 
 const app = express()
   // ...after setting views, body parsing, &c
   .use(chew("YOUR-SITE-ID"));
+
+// Make sure Chew is the very last middleware in your app.
+// You'll get a lot of nonsense in your analytics otherwise.
+// Working on a fix for this.
 ```
 
-Make sure Chew is the very last middleware in your app (or at least place it after your body parser middleware). You'll get a lot of nonsense in your analytics otherwise.
+### Fastify
+
+```js
+fastify.register(require("chewit/fastify"), {
+  id: "YOUR-SITE-ID"
+});
+```

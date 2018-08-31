@@ -4,104 +4,41 @@
 
 //  P A C K A G E S
 
-const agent = require("./lib/ua");
 const color = require("colorette");
 const request = require("request-promise-native");
-
-//  V A R I A B L E
-
-const log = console.log; // eslint-disable-line
 
 
 
 //  P R O G R A M
 
-module.exports = exports = siteId => {
-  return (req, res, next) => {
-    if (!siteId || !req) return displayError("A parameter is missing!", next);
+module.exports = exports = (siteId, visitDetails) => {
+  if (!siteId) return displayError("Your site cannot be tracked without an ID!");
+  if (!visitDetails) return; // Gracefully decline to continue
 
-    const logVisit = {};
-
-    logVisit.id = siteId;
-    logVisit.timestamp = Date.now();
-
-    if (req.headers.host) logVisit.host = req.headers.host;
-    if (req.hostname) logVisit.hostname = req.hostname;
-    if (req.headers["accept-language"]) logVisit.language = req.headers["accept-language"];
-    if (req.headers.referer) logVisit.referrer = req.headers.referer;
-
-    if (
-      req.headers.dnt &&
-      parseInt(req.headers.dnt)
-    ) logVisit.dnt = parseInt(req.headers.dnt);
-
-    if (
-      req.url ||
-      req.originalUrl ||
-      req.path
-    ) logVisit.url = req.url || req.originalUrl || req.path;
-
-    if (req.method) logVisit.httpMethod = req.method;
-
-    if (
-      req.headers["x-forwarded-for"] ||
-      req.connection.remoteAddress ||
-      req.ip
-    ) logVisit.ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress || req.ip;
-
-    if (req.protocol) logVisit.protocol = req.protocol;
-
-    // User Agent
-
-    let source = req.headers["user-agent"] || "";
-    if (req.headers["x-ucbrowser-ua"]) source = req.headers["x-ucbrowser-ua"];
-
-    const ua = agent();
-
-    ua.Agent.source = source.replace(/^\s*/, "").replace(/\s*$/, "");
-    ua.Agent.os = ua.getOS(ua.Agent.source);
-    ua.Agent.osversion = ua.getOSVersion(ua.Agent.source);
-    ua.Agent.platform = ua.getPlatform(ua.Agent.source);
-    ua.Agent.browser = ua.getBrowser(ua.Agent.source);
-    ua.Agent.browserversion = ua.getBrowserVersion(ua.Agent.source);
-
-    ua.testBot();
-    ua.testWebkit();
-    ua.testDevice();
-    ua.testAndroidTablet();
-    ua.testTablet();
-    ua.testCompatibilityMode();
-    ua.testCaptiveNetwork();
-
-    logVisit.ua = ua.Agent;
-
-    return new Promise((resolve, reject) => { // eslint-disable-line
-      if (req.hostname !== "localhost") {
-        request({
-          method: "POST",
-          url: "https://api.chew.sh",
-          body: logVisit,
-          json: true
-        }).then(body => {
-          if (!body) return resolve(body);
-          resolve(body);
-          next();
-        }).catch(welp => {
-          displayError(welp, next());
-          resolve(welp);
-        });
-      } else {
-        next();
-      }
-    });
-  };
+  return new Promise((resolve, reject) => { // eslint-disable-line
+    if (!visitDetails.hostname.includes("localhost")) { // ignore local development
+      request({
+        body: visitDetails,
+        json: true,
+        method: "POST",
+        url: "https://api.chew.sh"
+      }).then(visitEmitResponse => {
+        if (!visitEmitResponse) resolve(visitEmitResponse);
+        resolve(visitEmitResponse);
+      }).catch(visitEmitError => {
+        resolve(displayError(visitEmitError));
+      });
+    } else {
+      resolve(siteId);
+    }
+  });
 };
 
 
 
 //  H E L P E R
 
-const displayError = (text, next) => {
+const displayError = text => {
   if (text.toString().includes("40"))
     text = text.toString().split("-")[1].trim().replace(/"/g, "");
 
@@ -110,9 +47,9 @@ const displayError = (text, next) => {
 
   if (text.toString().includes("socket hang up")) return;
 
-  return log(
+  return process.stdout.write(
     color.red("\n▸▸ Chew Error\n") +
     color.magenta(`▸▸▸ ${text.toString().split(":")}\n\n`) +
     color.cyan(`Check ${color.underline("https://chew.sh/docs")} for integration tips\n`)
-  ), next();
+  );
 };
