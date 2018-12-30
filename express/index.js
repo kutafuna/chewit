@@ -7,7 +7,7 @@
 const chew = require("..");
 const color = require("colorette");
 
-//  V A R I A B L E
+//  U T I L
 
 const agent = require("../lib/ua");
 
@@ -80,9 +80,11 @@ module.exports = exports = siteId => {
     // User Agent
 
     let source = requestObject.headers["user-agent"] || "";
+
     if (requestObject.headers["x-ucbrowser-ua"]) source = requestObject.headers["x-ucbrowser-ua"];
 
     const ua = agent();
+
     ua.Agent.source = source.replace(/^\s*/, "").replace(/\s*$/, "");
 
     ua.Agent.browser = ua.getBrowser(ua.Agent.source);

@@ -25,9 +25,10 @@ module.exports = exports = (siteId, visitDetails) => {
       }).then(visitEmitResponse => {
         if (!visitEmitResponse) resolve(visitEmitResponse);
         resolve(visitEmitResponse);
-      }).catch(visitEmitError => {
-        resolve(displayError(visitEmitError));
-      });
+      })
+        .catch(visitEmitError => {
+          resolve(displayError(visitEmitError));
+        });
     } else {
       resolve(siteId);
     }

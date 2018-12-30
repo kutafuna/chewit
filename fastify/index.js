@@ -8,7 +8,7 @@ const chew = require("..");
 const color = require("colorette");
 const fp = require("fastify-plugin");
 
-//  V A R I A B L E S
+//  U T I L S
 
 const agent = require("../lib/ua");
 const extensionRegex = /\.[a-zA-Z0-9]+$/g;
@@ -93,9 +93,11 @@ module.exports = exports = fp((fastify, options, next) => {
       // User Agent
 
       let source = requestObject.headers["user-agent"] || "";
+
       if (requestObject.headers["x-ucbrowser-ua"]) source = requestObject.headers["x-ucbrowser-ua"];
 
       const ua = agent();
+
       ua.Agent.source = source.replace(/^\s*/, "").replace(/\s*$/, "");
 
       ua.Agent.browser = ua.getBrowser(ua.Agent.source);
