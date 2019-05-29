@@ -4,12 +4,12 @@
 
 //  P A C K A G E
 
-const chew = require("..");
 const color = require("colorette");
 
-//  U T I L
+//  U T I L S
 
 const agent = require("../lib/ua");
+const chew = require("..");
 
 
 
@@ -36,8 +36,10 @@ module.exports = exports = siteId => {
     ) logVisit.host = requestObject.headers.host;
     else logVisit.host = "";
 
-    if (requestObject.hostname) logVisit.hostname = requestObject.hostname;
-    else logVisit.hostname = "";
+    if (requestObject.hostname)
+      logVisit.hostname = requestObject.hostname;
+    else
+      logVisit.hostname = "";
 
     if (
       requestObject.headers &&
@@ -64,8 +66,10 @@ module.exports = exports = siteId => {
     ) logVisit.url = requestObject.url || requestObject.originalUrl || requestObject.path;
     else logVisit.url = "/";
 
-    if (requestObject.method) logVisit.httpMethod = requestObject.method;
-    else logVisit.httpMethod = "GET";
+    if (requestObject.method)
+      logVisit.httpMethod = requestObject.method;
+    else
+      logVisit.httpMethod = "GET";
 
     if (
       requestObject.headers["x-forwarded-for"] ||
@@ -74,14 +78,17 @@ module.exports = exports = siteId => {
     ) logVisit.ip = requestObject.headers["x-forwarded-for"] || requestObject.connection.remoteAddress || requestObject.ip;
     else logVisit.ip = "";
 
-    if (requestObject.protocol) logVisit.protocol = requestObject.protocol;
-    else logVisit.protocol = "http";
+    if (requestObject.protocol)
+      logVisit.protocol = requestObject.protocol;
+    else
+      logVisit.protocol = "http";
 
     // User Agent
 
     let source = requestObject.headers["user-agent"] || "";
 
-    if (requestObject.headers["x-ucbrowser-ua"]) source = requestObject.headers["x-ucbrowser-ua"];
+    if (requestObject.headers["x-ucbrowser-ua"])
+      source = requestObject.headers["x-ucbrowser-ua"];
 
     const ua = agent();
 

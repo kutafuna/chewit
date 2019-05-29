@@ -5,32 +5,48 @@
 //  P A C K A G E S
 
 const color = require("colorette");
-const request = require("request-promise-native");
+const got = require("got");
+
+//  U T I L
+
+const apiUrl = "https://api.chew.sh";
 
 
 
 //  P R O G R A M
 
 module.exports = exports = (siteId, visitDetails) => {
-  if (!siteId) return displayError("Your site cannot be tracked without an ID!");
-  if (!visitDetails) return; // Gracefully decline to continue
+  if (!siteId)
+    return displayError("Your site cannot be tracked without an ID!");
 
-  return new Promise((resolve, reject) => { // eslint-disable-line
-    if (!visitDetails.hostname.includes("localhost")) { // ignore local development
-      request({
-        body: visitDetails,
-        json: true,
-        method: "POST",
-        url: "https://api.chew.sh"
-      }).then(visitEmitResponse => {
-        if (!visitEmitResponse) resolve(visitEmitResponse);
-        resolve(visitEmitResponse);
-      })
-        .catch(visitEmitError => {
+  if (!visitDetails)
+    return; // Gracefully decline to continue
+
+  return new Promise(async(resolve) => {
+    const { protocol } = new URL(visitDetails.hostname);
+
+    switch(true) {
+      case protocol.includes("localhost"):
+      case protocol.includes(".local"):
+        resolve(siteId); // Ignore local development
+        return;
+
+      default:
+        try {
+          const [visitEmitResponse] = await Promise.all([got.post(apiUrl, {
+            body: visitDetails,
+            json: true
+          })]);
+
+          if (!visitEmitResponse.body)
+            resolve();
+          else
+            resolve(visitEmitResponse.body);
+        } catch(visitEmitError) {
           resolve(displayError(visitEmitError));
-        });
-    } else {
-      resolve(siteId);
+        }
+
+        return;
     }
   });
 };
@@ -46,7 +62,8 @@ const displayError = text => {
   if (text.toString().includes("50"))
     text = "Internal server error, please try once more in a few minutes.";
 
-  if (text.toString().includes("socket hang up")) return;
+  if (text.toString().includes("socket hang up"))
+    return;
 
   return process.stdout.write(
     color.red("\n▸▸ Chew Error\n") +

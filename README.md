@@ -47,3 +47,9 @@ fastify.register(require("chewit/fastify"), {
   id: "YOUR-SITE-ID"
 });
 ```
+
+
+
+## Note
+
+This module follows ChronVer, [visit this site](https://chronver.org "ChronVer homepage") for more info.

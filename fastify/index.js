@@ -4,13 +4,13 @@
 
 //  P A C K A G E S
 
-const chew = require("..");
 const color = require("colorette");
 const fp = require("fastify-plugin");
 
 //  U T I L S
 
 const agent = require("../lib/ua");
+const chew = require("..");
 const extensionRegex = /\.[a-zA-Z0-9]+$/g;
 
 
@@ -87,14 +87,17 @@ module.exports = exports = fp((fastify, options, next) => {
       else logVisit.ip = "";
 
       // TODO: Unable to get protocol i.e. `https?`
-      if (requestObject.protocol) logVisit.protocol = requestObject.protocol;
-      else logVisit.protocol = "http";
+      if (requestObject.protocol)
+        logVisit.protocol = requestObject.protocol;
+      else
+        logVisit.protocol = "http";
 
       // User Agent
 
       let source = requestObject.headers["user-agent"] || "";
 
-      if (requestObject.headers["x-ucbrowser-ua"]) source = requestObject.headers["x-ucbrowser-ua"];
+      if (requestObject.headers["x-ucbrowser-ua"])
+        source = requestObject.headers["x-ucbrowser-ua"];
 
       const ua = agent();
 
@@ -115,7 +118,6 @@ module.exports = exports = fp((fastify, options, next) => {
       ua.testWebkit();
 
       logVisit.ua = ua.Agent;
-
       chew(logVisit.id, logVisit);
     }
 
