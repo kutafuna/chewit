@@ -23,7 +23,8 @@ module.exports = exports = (siteId, visitDetails) => {
     return; // Gracefully decline to continue
 
   return new Promise(async(resolve) => {
-    const { protocol } = new URL(visitDetails.hostname);
+    const visitedUrl = `${visitDetails.protocol}://${visitDetails.host}${visitDetails.url}`;
+    const { protocol } = new URL(visitedUrl);
 
     switch(true) {
       case protocol.includes("localhost"):

@@ -40,5 +40,5 @@
     "test:dependencies": "updates -u ./",
     "test:lint": "standardx --verbose | snazzy"
   },
-  "version": "2019.06.04"
+  "version": "2019.06.06"
 }
