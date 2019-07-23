@@ -68,8 +68,7 @@ module.exports = exports = fp((fastify, options, next) => {
 
       if (
         requestObject.raw &&
-        requestObject.raw.url ||
-        requestObject.raw &&
+        (requestObject.raw.url || requestObject.raw) &&
         requestObject.raw.originalUrl
       ) logVisit.url = requestObject.raw.url || requestObject.raw.originalUrl;
       else logVisit.url = "/";

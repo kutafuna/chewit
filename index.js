@@ -22,7 +22,7 @@ module.exports = exports = (siteId, visitDetails) => {
   if (!visitDetails)
     return; // Gracefully decline to continue
 
-  return new Promise(async(resolve) => {
+  return new Promise(async(resolve) => { // eslint-disable-line no-async-promise-executor
     const visitedUrl = `${visitDetails.protocol}://${visitDetails.host}${visitDetails.url}`;
     const { protocol } = new URL(visitedUrl);
 
@@ -46,8 +46,6 @@ module.exports = exports = (siteId, visitDetails) => {
         } catch(visitEmitError) {
           resolve(displayError(visitEmitError));
         }
-
-        return;
     }
   });
 };

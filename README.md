@@ -1,6 +1,6 @@
 # chewit
 
-[![INC](https://img.shields.io/badge/%F0%9F%92%A1-IdeasNeverCease/chewit-51dcfb.svg?style=flat-square)](https://git.inc.sh/IdeasNeverCease/chewit) ![download count](https://img.shields.io/npm/dt/chewit.svg?style=flat-square) ![npm version](https://img.shields.io/npm/v/chewit.svg?style=flat-square)
+[![INC](https://img.shields.io/badge/%E2%9C%A8-IdeasNeverCease/chewit-51dcfb.svg?style=flat-square)](https://code.webb.page/IdeasNeverCease/chewit) ![download count](https://img.shields.io/npm/dt/chewit.svg?style=flat-square) ![npm version](https://img.shields.io/npm/v/chewit.svg?style=flat-square)
 
 > Analytics you can count on
 
